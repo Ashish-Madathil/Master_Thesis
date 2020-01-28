@@ -35,7 +35,6 @@ def transfer_image(image):
     input = input.to(device)
     output = model(input)
     output_img = (utils.im_convert(output) * 255.0).astype(np.uint8)
-    #output = StyleTransferModel(input)
     return output_img
 
 for image in tqdm(glob("./Datasets/Baseline_Train_VOC/JPEGImages/*.jpg")):

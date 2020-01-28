@@ -189,7 +189,6 @@ torch.save(checkpoint, 'checkpoint.pth')
 #torch.save(model.state_dict(),"/home/veas/Projects/PycharmProjects/MASTER_THESIS/StyleTransfer/")
 #torch.save(model.state_dict(),"./Datasets/Models/model/model.state_dict")
 #torch.save(model,"./Datasets/Models/model/model.h5")
-#torch.save(model.state_dict(),"./Datasets/Models/model/model")
 #torch.save(model.state_dict(),'StyleTransferModel.pth')
 
 
