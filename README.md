@@ -1,1 +1,1 @@
-Master Thesis : “Domain Adaptation of Synthetic Generated Omnidirectional Images for Object Detection”
+Domain Adaptation of Synthetic Generated Omnidirectional Images for Object Detection
