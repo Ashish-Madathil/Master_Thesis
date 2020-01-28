@@ -1,0 +1,30 @@
+item {
+  name: "person"
+  id: 1
+  display_name: "person"
+}
+item {
+  name: "chair"
+  id: 2
+  display_name: "chair"
+}
+item {
+  name: "table"
+  id: 3
+  display_name: "table"
+}
+item {
+  name: "armchair"
+  id: 4
+  display_name: "armchair"
+}
+item {
+  name: "tv"
+  id: 5
+  display_name: "tv"
+}
+item {
+  name: "wheeled_walker"
+  id: 6
+  display_name: "wheeled walker"
+}

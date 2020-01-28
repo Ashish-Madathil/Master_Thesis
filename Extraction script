@@ -1,0 +1,114 @@
+﻿
+script:
+python TFRecordExtractor.py --src /mnt/data/datasets/training_25k.record --dst ~/Downloads/testexport
+
+my script to extract training dataset into Downloads/Datasets/Train folder:
+cd home
+cd veas
+python3 TFRecordExtractor.py --src /home/veas/Downloads/Datasets/Train_Content/THEODORE_training_50k.record --dst /home/veas/Downloads/Datasets/Train_Content/
+
+TO IMPORT A LIBRARY AND THERE IS ENVIRONMENT ERROR (EXAMPLE TQDM):
+pip install --user  tqdm==4.36.1
+
+
+OPENING PYCHARM:
+cd /home/veas/pycharm-community-2019.2.2/bin
+./pycharm.sh
+
+
+CONVERTING RAW PASCAL VOC DATASET INTO TFRECORD FOR OBJECT DETECTION:
+
+python3 create_pascal_tf_record_custom.py  --data_dir=/home/veas/Downloads/Datasets/Train_VOC/  --output_path=/home/veas/Downloads/Datasets/Train_TF/Train_VOC.record
+
+python3 object_detection/dataset_tools/create_pascal_tf_record_custom.py  --data_dir=/home/veas/Downloads/Datasets/Train_VOC/  --output_path=/home/veas/Downloads/Datasets/Train_TF/Train_VOC.record
+
+*** 
+python3 create_pascal_tf_record_custom.py  --data_dir=/home/veas/Projects/PycharmProjects/MASTER_THESIS/StyleTransfer/Datasets/Dataset_1_Omni/  --output_path=/home/veas/Projects/PycharmProjects/MASTER_THESIS/StyleTransfer/Datasets/Dataset_Records/Dataset_1_Omni   #name folder not file, file automatically saves
+*************************
+#label_map.pbtxt & create is in this location:
+cd home/veas
+
+python create_pascal_tf_record_custom.py --data_dir /home/veas/Projects/PycharmProjects/MASTER_THESIS/StyleTransfer/Datasets/Dataset_1_Omni --label_map_path label_map.pbtxt --output_path Downloads/
+
+python create_pascal_tf_record_custom.py --data_dir /home/veas/Projects/PycharmProjects/MASTER_THESIS/StyleTransfer/Datasets/Dataset_2_Indoor --label_map_path label_map.pbtxt --output_path /home/veas/Projects/PycharmProjects/MASTER_THESIS/StyleTransfer/Datasets/Dataset_Records/Dataset_2_Indoor/
+*****************************
+
+https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/installation.md
+
+CONVERT TF RECORD FILE TO PASCAL VOC FORMAT:
+cd home/veas/
+python3 tfrecord2voc.py --src /home/veas/datasets/theodore_v2/25k_sample_4/training.tfrecord --dst /home/veas/Downloads/Datasets/Baseline_Train_VOC/
+
+
+/home/veas/Projects/tf_research/research
+LIST OF TRAINING RECORDS:
+[veas@dst-aux-dl research]$ ls /mnt/data/datasets/theodore_v2
+
+model checkpoint pipeline.config
+/home/veas/Projects/PycharmProjects/MASTER_THESIS/ssd_resnet50_v1_fpn_shared_box_predictor_640x640_coco14_sync_2018_07_03
+
+FINDING OUT NUMBER OF IMAGES IN EVAL SET:
+ls /mnt/data/datasets/omnidetector-Flat/
+ls /mnt/data/datasets/omnidetector-Flat/Annotations|wc -l
+
+
+
+
+RUNNING LOCAL TRAINING JOB:
+
+goto research directory
+cd Projects/tf_research/research
+protoc object_detection/protos/*.proto --python_out=.
+export PYTHONPATH=$PYTHONPATH:`pwd`:`pwd`/slim
+python object_detection/builders/model_builder_test.py
+
+
+Recommended Directory Structure for Training and Evaluation
+
++data
+  -label_map file
+  -train TFRecord file
+  -eval TFRecord file
++models
+  + model
+    -pipeline config file
+    +train
+    +eval
+
+PIPELINE_CONFIG_PATH=/home/veas/Projects/PycharmProjects/MASTER_THESIS/StyleTransfer/Datasets/Models/model/copy_pipeline_theodore_v2_50k_eval_dst.config 
+OR 
+PIPELINE_CONFIG_PATH=/home/veas/Projects/PycharmProjects/MASTER_THESIS/StyleTransfer/copy_ssd_resnet50_v1_fpn_shared_box_predictor_640x640_coco14_sync.config
+
+
+ORRRR (*****Most Recent *****)
+
+
+PIPELINE_CONFIG_PATH=/home/veas/Projects/PycharmProjects/MASTER_THESIS/StyleTransfer/CONFIG/pipeline_theodore_v2_25k_eval_dst.config
+MODEL_DIR=/home/veas/Projects/PycharmProjects/MASTER_THESIS/StyleTransfer/Datasets/Models/model_recent    #always new model folder for every training
+NUM_TRAIN_STEPS=50000   #Don't need it anymore
+SAMPLE_1_OF_N_EVAL_EXAMPLES=1    #Don't need it anymore
+
+
+RUN:
+
+python object_detection/model_main.py \
+    --pipeline_config_path=${PIPELINE_CONFIG_PATH} \
+    --model_dir=${MODEL_DIR} \
+    --alsologtostderr
+
+INSTEAD OF...
+
+python object_detection/model_main.py \
+    --pipeline_config_path=${PIPELINE_CONFIG_PATH} \
+    --model_dir=${MODEL_DIR} \
+    --num_train_steps=${NUM_TRAIN_STEPS} \
+    --sample_1_of_n_eval_examples=$SAMPLE_1_OF_N_EVAL_EXAMPLES \
+    --alsologtostderr
+
+RUNNING TENSORBOARD:
+
+tensorboard --logdir=${MODEL_DIR}
+1) Come out of tmux, go to regular terminal 
+2) go to: cd Projects/PycharmProjects/MASTER_THESIS/StyleTransfer/Datasets/Models/
+3) tensorboard --logdir model_baseline/
+AT HOME: [veas@dst-aux-dl Models]$ tensorboard --bind_all --logdir model_omni/
